@@ -1,0 +1,10 @@
+application:
+  job:
+    sftp-receiving:
+      cron: 0/10 * * * * ?
+  sftp:
+    host: eu-central-1.sftpcloud.io
+    port: 22
+    user: 6a05ac0ba85e43c68fe14e6f3e0dd2a5
+    password: QdXr7le8LMeMHLEgTMbT5uDcbglur05T
+    receiveDirectory: /excel/cancellation

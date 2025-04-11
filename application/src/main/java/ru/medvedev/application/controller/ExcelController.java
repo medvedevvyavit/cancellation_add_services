@@ -8,24 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.medvedev.application.domain.SmsAdditionalServiceDto;
-import ru.medvedev.application.service.ExcelParserService;
-import ru.medvedev.application.utils.ExcelParser;
+import ru.medvedev.application.utils.UniversalExcelParser;
 
-import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/excel")
 public class ExcelController {
 
-    private final ExcelParserService excelParserService;
-
     @PostMapping("/sms")
-    public ResponseEntity<Void> uploadExcel(@RequestParam("file") MultipartFile file) throws IOException {
-//        excelParserService.parseExcelFile(file);
-
-        var smsAdditionalServiceDto = (SmsAdditionalServiceDto) ExcelParser.parseExcelFile(file, SmsAdditionalServiceDto.class);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<SmsAdditionalServiceDto>> uploadExcel(@RequestParam("file") MultipartFile file) throws Exception {
+        var result = UniversalExcelParser.parse(file.getInputStream(), SmsAdditionalServiceDto.class);
+        return ResponseEntity.ok(result);
     }
 }
