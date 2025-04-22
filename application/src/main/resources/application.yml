@@ -1,10 +1,28 @@
 application:
+  schema: public
   job:
     sftp-receiving:
       cron: 0/10 * * * * ?
   sftp:
-    host: eu-central-1.sftpcloud.io
-    port: 22
-    user: 6a05ac0ba85e43c68fe14e6f3e0dd2a5
-    password: QdXr7le8LMeMHLEgTMbT5uDcbglur05T
-    receiveDirectory: /excel/cancellation
+    host: localhost
+    port: 9922
+    user: sftpuser
+    password: pass
+    receiveDirectory: /excel
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: ${application.schema}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/cancellation_add_services
+    username: postgres
+    password: postgres
+  liquibase:
+    changeLog: classpath:liquibase/db.changelog-master.xml
+    default-schema: ${application.schema}
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}

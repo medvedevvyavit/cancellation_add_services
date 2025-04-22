@@ -1,0 +1,133 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="2025-04-16-create-int_channel_message-table" author="medvedev">
+        <createTable tableName="int_channel_message">
+            <column name="message_id" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_key" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_priority" type="BIGINT"/>
+            <column autoIncrement="true" name="message_sequence" type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_bytes" type="BYTEA"/>
+            <column name="region" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="group_key, message_id, region"
+                       constraintName="channel_message_pk"
+                       tableName="int_channel_message"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_group_to_message-table" author="medvedev">
+        <createTable tableName="int_group_to_message">
+            <column name="group_key" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_id" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="group_key, message_id, region"
+                       constraintName="group_to_message_pk"
+                       tableName="int_group_to_message"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_lock-table" author="medvedev">
+        <createTable tableName="int_lock">
+            <column name="lock_key" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="CHAR(36)"/>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="lock_key, region"
+                       constraintName="lock_pk"
+                       tableName="int_lock"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_message-table" author="medvedev">
+        <createTable tableName="int_message">
+            <column name="message_id" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_bytes" type="BYTEA"/>
+        </createTable>
+        <addPrimaryKey columnNames="message_id, region"
+                       constraintName="message_pk"
+                       tableName="int_message"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_message_group-table" author="medvedev">
+        <createTable tableName="int_message_group">
+            <column name="group_key" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="marked" type="BIGINT"/>
+            <column name="complete" type="BIGINT"/>
+            <column name="last_released_sequence" type="BIGINT"/>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+        <addPrimaryKey columnNames="group_key, region"
+                       constraintName="message_group_pk"
+                       tableName="int_message_group"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_metadata_store-table" author="medvedev">
+        <createTable tableName="int_metadata_store">
+            <column name="metadata_key" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="metadata_value" type="varchar(4000)"/>
+            <column name="region" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="metadata_key,region"
+                       constraintName="int_metadata_store_pk"
+                       tableName="int_metadata_store"/>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_channel_msg_date-index" author="medvedev">
+        <createIndex indexName="int_channel_msg_date_idx"
+                     tableName="int_channel_message">
+            <column name="created_date"/>
+            <column name="message_sequence"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_channel_msg_priority-index" author="medvedev">
+        <createIndex indexName="int_channel_msg_priority_idx"
+                     tableName="int_channel_message">
+            <column name="message_priority"/>
+            <column name="created_date"/>
+            <column name="message_sequence"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="2025-04-16-create-int_message-index" author="medvedev">
+        <createIndex indexName="int_message_ix1"
+                     tableName="int_message">
+            <column name="created_date"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

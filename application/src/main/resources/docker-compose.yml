@@ -1,0 +1,19 @@
+version: "3.9"
+# https://docs.docker.com/compose/compose-file/
+
+services:
+  sftp-server:
+    container_name: sftp-server
+    image: antrea/sftp #https://hub.docker.com/r/antrea/sftp
+    platform: linux/amd64 #Change the platform as needed
+    ports:
+      - "9922:22"
+    volumes:
+      - ./sftp_test_data:/home/sftpuser/excel  # Mount a local directory to the container
+    environment:
+      SFTP_USERS: "sftpuser:pass:1001:100"  # Set the username, password, UID (user id), and GID (group user id)
+      SFTP_CHROOT: "/home/sftpuser"  # Restrict user to the home directory
+
+networks:
+  default:
+    name: default_network
