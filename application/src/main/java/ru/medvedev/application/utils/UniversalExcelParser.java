@@ -3,7 +3,6 @@ package ru.medvedev.application.utils;
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.medvedev.application.domain.record.ExcelField;
 import ru.medvedev.application.enums.CancellationServiceType;
 
 import java.io.InputStream;
